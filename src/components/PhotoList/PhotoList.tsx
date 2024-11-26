@@ -10,27 +10,28 @@ export default function PhotoList() {
   const dispatch = useDispatch()
   const photos = useSelector(state => state.photosReducer.photos)
   const showedPhotos = useSelector(state => state.photosReducer.showedPhotos)
-  const currentPage = useSelector(state => state.photosReducer.currentPage)
+  const itemsPerPage = useSelector(state => state.photosReducer.itemsPerPage)
   const status = useSelector(state => state.photosReducer.status)
   const error = useSelector(state => state.photosReducer.error)
   
   useLayoutEffect(() => {
-    dispatch(setPage(1))
+    // dispatch(setPage(1))
     dispatch(setShowedPhotos())
     console.log(photos)
+    console.log(showedPhotos)
   }, [photos])
 
   return (
-    <section className='flex flex-wrap gap-5 align-center justify-center'>
+    <section className='flex flex-wrap gap-5 align-center justify-center mb-6'>
         {
-          showedPhotos.length > 0 && <PaginationBar />
+          photos.length > itemsPerPage && <PaginationBar />
         }
 
         {
           status === 'loading' && <Spinner />
         }
         
-        <div className='flex flex-wrap gap-5 align-center justify-center'>
+        <ul className='flex flex-wrap gap-5 align-center justify-center'>
           {
             showedPhotos.length > 0 && status === 'succeeded' &&
               (
@@ -39,10 +40,6 @@ export default function PhotoList() {
                 })
               )
           }
-{/* 
-          {
-            status === 'loading' && <Spinner />
-          } */}
 
           {
             showedPhotos.length === 0 && status === '' && <span>Select a date on Earth and a rover</span>
@@ -55,10 +52,10 @@ export default function PhotoList() {
           { 
             photos.length === 0 && status === 'succeeded' && <span>Photos not found</span>
           }
-        </div>
+        </ul>
 
         {
-          showedPhotos.length > 0 && <PaginationBar />
+          photos.length > itemsPerPage && <PaginationBar />
         }
     </section>
   )

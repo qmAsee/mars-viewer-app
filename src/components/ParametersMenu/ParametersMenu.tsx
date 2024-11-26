@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setDate, setRover } from '@/store/slices/querySlice.js'
-import { fetchPhotos, setPhotos } from '@/store/slices/photoSlice.js'
+import { fetchPhotos, setPage, setPhotos } from '@/store/slices/photoSlice.js'
+import { RootState } from '@/store/store.js'
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -25,8 +26,8 @@ import { formatDate } from '../../utils/functions.js'
 
 export default function ParametersMenu() {
   const dispatch = useDispatch()
-  const earthDate = useSelector(state => state.queryReducer.earthDate)
-  const rover = useSelector(state => state.queryReducer.rover)
+  const earthDate = useSelector((state: RootState) => state.queryReducer.earthDate)
+  const rover = useSelector((state: RootState) => state.queryReducer.rover)
 
   function onSelectDate(newDate) {
     const formattedDate = formatDate(newDate)
@@ -39,12 +40,14 @@ export default function ParametersMenu() {
 
   function handleSubmit(e) {
     e.preventDefault()
+    dispatch(setPhotos([]));
     dispatch(fetchPhotos());
+    dispatch(setPage(1));
   }
 
   return (
     <section className='flex align-center justify-center mb-10'>
-      <form onSubmit={handleSubmit} className='flex gap-5'>
+      <form onSubmit={handleSubmit} className='flex gap-5' name='query_form' id='query_form'>
       <Select value={rover} onValueChange={onSelectRover}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Choose a rover" />
@@ -76,7 +79,6 @@ export default function ParametersMenu() {
                   captionLayout='dropdown'
                   fromYear={1990}
                   toYear={2024}
-                  // initialFocus
                 />
             </PopoverContent>
         </Popover>

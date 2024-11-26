@@ -46,7 +46,7 @@ const initialState: PhotoState = {
 
     currentPage: 1,
     totalItems: null,
-    itemsPerPage: 21,
+    itemsPerPage: 20,
 };
 
 const photosSlice = createSlice({
@@ -67,7 +67,11 @@ const photosSlice = createSlice({
             state.currentPage = state.currentPage - 1
         },
         setShowedPhotos(state) {
-            state.showedPhotos = state.photos.slice(state.itemsPerPage * state.currentPage - state.itemsPerPage, state.itemsPerPage * state.currentPage)
+            if (state.photos.length - 1 <= state.itemsPerPage) {
+                state.showedPhotos = state.photos
+            } else {
+                state.showedPhotos = state.photos.slice(state.itemsPerPage * state.currentPage - state.itemsPerPage, state.itemsPerPage * state.currentPage)
+            }
         },
         setClickedPhoto(state, action) {
             state.clickedPhoto = action.payload

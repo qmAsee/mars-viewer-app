@@ -26,17 +26,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/:photoId",
-    element: <PhotoDetails />
+    element: <PhotoDetails />,
   }
 ]);
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
-    {/* <PersistGate persistor={persistor} loading={null}> */}
+    <PersistGate persistor={persistor} loading={null}>
     {/* <StrictMode> */}
       {/* <App /> */}
         <RouterProvider router={router} />
-    {/* </PersistGate> */}
+    </PersistGate>
     {/* </StrictMode> */}
   </Provider>,
 )

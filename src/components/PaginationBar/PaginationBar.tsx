@@ -1,23 +1,24 @@
-import {useEffect, useState} from 'react'
-import {NavLink} from 'react-router-dom'
+import {useEffect, useState, useCallback, useMemo, memo} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPage, prevPage, nextPage, setShowedPhotos } from '../../store/slices/photoSlice'
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { RootState } from '@/store/store'
 
 export default function PaginationBar() {
   const dispatch = useDispatch()
-  const photos = useSelector((state) => state.photosReducer.photos);
-  const currentPage = useSelector((state) => state.photosReducer.currentPage);
-  const itemsPerPage = useSelector((state) => state.photosReducer.itemsPerPage);
+  const photos = useSelector((state: RootState) => state.photosReducer.photos);
+  const currentPage = useSelector((state: RootState) => state.photosReducer.currentPage);
+  const itemsPerPage = useSelector((state: RootState) => state.photosReducer.itemsPerPage);
 
-  function handleCountNumberOfPages() {
-    const pagesCount = Math.floor(photos.length / itemsPerPage)
+  const handleCountNumberOfPages = useCallback(() => {
+    const pagesCount = Math.ceil(photos.length / itemsPerPage)
     const numbersArr = [...Array(pagesCount).keys()].splice(1)
     return numbersArr;
-  }
+  }, [])  
 
-  function handleSetPage(e) {
-    dispatch(setPage(Number(e.target.textContent)))
+  function handleSetPage(e: React.MouseEvent<HTMLLIElement>) {
+    const target = e.target as HTMLLIElement
+    dispatch(setPage(Number(target.textContent)))
     dispatch(setShowedPhotos());
   }
 
@@ -33,7 +34,13 @@ export default function PaginationBar() {
 
   useEffect(() => {
     handleCountNumberOfPages()
+    // dispatch(setPage(JSON.parse(localStorage.getItem('persist:photos')).currentPage))
   }, [photos.length, currentPage])
+
+  // useEffect(() => {
+  //   handleCountNumberOfPages()
+  //   // dispatch(setPage(JSON.parse(localStorage.getItem('persist:photos')).currentPage))
+  // }, [photos.length, currentPage])
 
   return (
     <div className='flex items-center'>
@@ -48,8 +55,8 @@ export default function PaginationBar() {
         {
           handleCountNumberOfPages().map((item) => (
             <li
-              key={item}  // ключ должен быть на элементе списка
-              className={`flex w-10 h-10 justify-center items-center rounded-md ${item === currentPage ? 'bg-slate-300' : ''}`}
+              key={item}
+              className={`flex w-10 h-10 justify-center items-center rounded-md ${item === currentPage ? 'bg-zinc-300' : ''}`}
             >
               <span onClick={handleSetPage} className="cursor-pointer text-center leading-10 w-full">
                 {item}
@@ -66,23 +73,5 @@ export default function PaginationBar() {
         </button>
       }
     </div>
-
-  //   <div className="overflow-x-auto">
-  //   <ul className="flex space-x-2">
-  //     {handleCountNumberOfPages().map((item) => (
-  //       <li
-  //         key={item}
-  //         className={`flex w-10 h-10 justify-center items-center rounded-md ${item === currentPage ? 'bg-slate-300' : ''}`}
-  //       >
-  //         <span
-  //           onClick={handleSetPage}
-  //           className="flex cursor-pointer justify-center text-center leading-10"
-  //         >
-  //           {item}
-  //         </span>
-  //       </li>
-  //     ))}
-  //   </ul>
-  // </div>
   )
 }

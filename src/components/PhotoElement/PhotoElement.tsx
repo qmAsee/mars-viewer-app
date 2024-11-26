@@ -19,8 +19,9 @@ export default function PhotoElement({ data }: PhotoElementProps) {
     console.log(clickedPhoto)
   }
 
+
   return (
-    <div className={`flex flex-col ${styles.element_container}`}>
+    <li className={`flex flex-col hover:scale-105 transition-all ${styles.element_container}`}>
       <Link state={photos} onClick={() => handleChoosePhoto(data)} to={`/${data.id}`} target='_blank'>
         <img src={data.img_src} className='w-80 rounded-md' loading='lazy'/> 
       </Link>
@@ -29,6 +30,6 @@ export default function PhotoElement({ data }: PhotoElementProps) {
         <span>Rover: {data.rover.name}</span>
         <span>Camera: {data.camera.full_name}</span>
       </div>
-    </div>
+    </li>
   )
 }

@@ -67,6 +67,7 @@ body {
 
     --green-foreground: 166 73% 62%;
     --layout-element: 360 0% 51%;
+    --secondary-foreground: 0 0% 80%
   }
   .dark {
     --background: 240 10% 3.9%;

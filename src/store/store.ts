@@ -15,18 +15,32 @@ import queryReducer from './slices/querySlice';
 
 export type RootState = ReturnType<typeof store.getState>
 
-const rootReducer = combineReducers({
-    photosReducer: photosReducer,
-    queryReducer: queryReducer,
-})
-
-const persistConfig = {
-    key: "root",
-    storage,
+const photosPersistConfig = {
+  key: 'photos',
+  storage,
+  blacklist: ['photos', 'showedPhotos'], // Исключаем только photos
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+// Оборачиваем photosReducer в persistReducer
+const persistedPhotosReducer = persistReducer(photosPersistConfig, photosReducer);
 
+// Главный rootReducer
+const rootReducer = combineReducers({
+    photosReducer: persistedPhotosReducer, // Используем обернутый редюсер
+    queryReducer: queryReducer,
+});
+
+// Общая конфигурация для корня
+const rootPersistConfig = {
+  key: 'root',
+  storage,
+  blacklist: [], // Ничего не исключаем здесь
+};
+
+// Оборачиваем rootReducer
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+
+// Создаем store
 const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
@@ -35,7 +49,7 @@ const store = configureStore({
             ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
           },
         }),
-    
-})
-export const persistor = persistStore(store)
-export default store
+});
+
+export const persistor = persistStore(store);
+export default store;

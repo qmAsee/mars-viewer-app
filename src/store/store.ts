@@ -15,18 +15,17 @@ import queryReducer from './slices/querySlice';
 
 export type RootState = ReturnType<typeof store.getState>
 
-const photosPersistConfig = {
-  key: 'photos',
-  storage,
-  blacklist: ['photos', 'showedPhotos'], // Исключаем только photos
-};
+// const photosPersistConfig = {
+//   key: 'photos',
+//   storage,
+// };
 
-// Оборачиваем photosReducer в persistReducer
-const persistedPhotosReducer = persistReducer(photosPersistConfig, photosReducer);
+// // Оборачиваем photosReducer в persistReducer
+// const persistedPhotosReducer = persistReducer(photosPersistConfig, photosReducer);
 
 // Главный rootReducer
 const rootReducer = combineReducers({
-    photosReducer: persistedPhotosReducer, // Используем обернутый редюсер
+    photosReducer: photosReducer, 
     queryReducer: queryReducer,
 });
 

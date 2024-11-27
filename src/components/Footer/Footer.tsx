@@ -18,7 +18,7 @@ export default function Footer() {
             </li>
             <li className='flex gap-2'>
                     <img className='w-5' src='./src/assets/email_icon.svg'/>
-                    <span>max.kupchin.gis@yandex.ru</span>
+                    <span>max.kup.gis@yandex.ru</span>
             </li>
         </ul>
     </footer>

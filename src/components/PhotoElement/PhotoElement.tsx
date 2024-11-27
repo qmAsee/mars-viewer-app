@@ -21,7 +21,7 @@ export default function PhotoElement({ data }: PhotoElementProps) {
 
 
   return (
-    <li className={`flex flex-col hover:scale-105 transition-all ${styles.element_container}`}>
+    <li className={`flex flex-col justify-center hover:scale-105 transition-all ${styles.element_container}`}>
       <Link state={photos} onClick={() => handleChoosePhoto(data)} to={`/${data.id}`} target='_blank'>
         <img src={data.img_src} className='w-80 rounded-md' loading='lazy'/> 
       </Link>

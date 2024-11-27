@@ -28,14 +28,26 @@ const router = createBrowserRouter([
     path: "/:photoId",
     element: <PhotoDetails />,
   }
-]);
+], {
+  future: {
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_relativeSplatPath: true,
+      v7_skipActionErrorRevalidation: true,
+    }
+});
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
     <PersistGate persistor={persistor} loading={null}>
     {/* <StrictMode> */}
       {/* <App /> */}
-        <RouterProvider router={router} />
+        <RouterProvider
+          future={{
+            v7_startTransition: true,
+          }}
+          router={router} />
     </PersistGate>
     {/* </StrictMode> */}
   </Provider>,

@@ -11,6 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
+import Footer from '../Footer/Footer';
 
 export default function PhotoDetails() {
   const { photoId } = useParams()
@@ -27,7 +28,7 @@ export default function PhotoDetails() {
   return (
     <>
       <Header />
-      <article className='grid grid-cols-2 pl-10 gap-x-7 gap-y-3 box-border'>
+      <article className='grid grid-cols-2 pl-10 gap-x-7 gap-y-3 box-border mb-10'>
         <div className='flex items-center'>
           <ChevronLeft className='opacity-50 w-5' />
           <Link className='text-l text-zinc-500' to="/">Back to photo list</Link>
@@ -76,6 +77,7 @@ export default function PhotoDetails() {
           </div>
         </div>
       </article>
+      <Footer />
     </>
   )
 }

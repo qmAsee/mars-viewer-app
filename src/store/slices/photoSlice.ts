@@ -35,6 +35,7 @@ export interface PhotoState {
     currentPage: number;
     totalItems: number | null;
     itemsPerPage: number;
+    pagesArr: number[];
 }
 
 const initialState: PhotoState = {
@@ -47,6 +48,7 @@ const initialState: PhotoState = {
     currentPage: 1,
     totalItems: null,
     itemsPerPage: 20,
+    pagesArr: [],
 };
 
 const photosSlice = createSlice({
@@ -57,7 +59,6 @@ const photosSlice = createSlice({
             state.photos = action.payload;
         },
         setPage(state, action: PayloadAction<number>) {
-            console.log(state.showedPhotos)
             state.currentPage = action.payload;
         },
         nextPage(state) {
@@ -75,6 +76,11 @@ const photosSlice = createSlice({
         },
         setClickedPhoto(state, action) {
             state.clickedPhoto = action.payload
+        },
+        setPagesArr(state) {
+            const totalItems = state.photos.length;
+            const totalPages = Math.ceil(totalItems / state.itemsPerPage);
+            state.pagesArr = Array.from({ length: totalPages }, (_, i) => i + 1);
         }
     },
     extraReducers: (builder) => {
@@ -93,5 +99,5 @@ const photosSlice = createSlice({
     },
 });
 
-export const { setPhotos, setShowedPhotos, setPage, nextPage, prevPage, setClickedPhoto } = photosSlice.actions;
+export const { setPhotos, setShowedPhotos, setPage, nextPage, prevPage, setClickedPhoto, setPagesArr } = photosSlice.actions;
 export default photosSlice.reducer;
